@@ -6,13 +6,11 @@ RSpec.describe Post, type: :model do
     let(:post_count) { 100 }
     before do
       # Create posts with comments and likes
-      post_count.times do |pi|
-        post = Post.create!(title: "Post #{pi}")
-        50.times do |ci|
-          post.comments.create!(content: "Comment #{ci} for #{post.title}")
-        end
-        50.times do |li|
-          post.likes.create!(user_name: "User #{li} for #{post.title}")
+      post_count.times do |i|
+        post = Post.create!(title: "Post #{i}")
+        50.times do |j|
+          post.comments.create!(content: "Comment #{j} for #{post.title}")
+          post.likes.create!(user_name: "User #{j} for #{post.title}")
         end
       end
 
@@ -33,7 +31,7 @@ RSpec.describe Post, type: :model do
         end
 
         x.report("Exists:") do
-          posts_with_exists = Post.where <<-SQL
+          posts_with_exists = Post.where <<-SQL.squish
 EXISTS (SELECT * FROM comments c WHERE c.post_id = posts.id)
 AND
 EXISTS (SELECT * FROM likes l WHERE l.post_id = posts.id)
